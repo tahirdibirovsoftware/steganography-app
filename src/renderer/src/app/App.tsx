@@ -1,7 +1,7 @@
 import { Space } from 'antd'
 import { DataManager } from '../features/DataManager'
 import style from './App.module.scss'
-import { SHBCNLogo } from '@renderer/shared'
+import { Copyright, SHBCNLogo } from '@renderer/shared'
 
 
 const App = (): JSX.Element => {
@@ -9,6 +9,7 @@ const App = (): JSX.Element => {
     <Space className={style.App}>
       <SHBCNLogo height={50} width={150}/>
       <DataManager />
+      <Copyright color='grey' text='DBRV Software'/>
     </Space>
   )
 }
