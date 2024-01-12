@@ -1,0 +1,1 @@
+export { SHBCNLogo } from './ui/Shbcn'

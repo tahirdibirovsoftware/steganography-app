@@ -1,5 +1,5 @@
 import { Image } from "antd"
-import logo from '../../../../../../resources/brand/shbcn.jpg'
+import logo from '../../../../../../../resources/brand/shbcn.jpg'
 import { FC } from "react"
 import { ILogo } from "@renderer/shared/types/logo.types"
 

@@ -1,7 +1,8 @@
 import { Space } from 'antd'
 import { DataManager } from '../features/DataManager'
 import style from './App.module.scss'
-import { Copyright, SHBCNLogo } from '@renderer/shared'
+import { Copyright } from '@renderer/shared/ui/Copy'
+import { SHBCNLogo } from '@renderer/shared/ui/Logo'
 
 
 const App = (): JSX.Element => {
