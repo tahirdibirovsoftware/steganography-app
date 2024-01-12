@@ -7,7 +7,7 @@ import { SHBCNLogo } from '@renderer/shared'
 const App = (): JSX.Element => {
   return (
     <Space className={style.App}>
-      <SHBCNLogo height={60} width={200}/>
+      <SHBCNLogo height={50} width={150}/>
       <DataManager />
     </Space>
   )
