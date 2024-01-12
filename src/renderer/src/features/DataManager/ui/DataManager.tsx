@@ -10,7 +10,7 @@ const DataManager = (): JSX.Element => {
       <Input type='password' className={style.Input} placeholder="Gizli şifrə" />
       <TextArea rows={6} style={{resize: 'none'}} placeholder='Sizin məxfi mesajınız' className={style.Input}/>
       <Upload>
-        <Button className={style.Input} style={{ width: '10rem'}} icon={<UploadOutlined/>}>Şəkli daxil edin</Button>
+        <Button color='primary' className={style.Input} style={{ width: '10rem', background: '#1890ff', border: 'unset'}} icon={<UploadOutlined/>}>Şəkli daxil edin</Button>
       </Upload>
     </Space>
   )
