@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "antd": "^5.12.8",
     "electron-updater": "^6.1.7",
+    "react-router-dom": "^6.21.2",
     "ts-steganography": "^3.0.2"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@types/node": "^18.19.5",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.2.1",
     "electron": "^28.1.1",
     "electron-builder": "^24.9.1",

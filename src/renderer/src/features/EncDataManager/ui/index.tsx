@@ -3,7 +3,7 @@ import style from './DataManager.module.scss'
 import { LockOutlined, UploadOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
 
-const DataManager = (): JSX.Element => {
+const EncDataManager = (): JSX.Element => {
   return (
     <Space className={style.Manager}>
       <LockOutlined style={{fontSize: '2.5rem', color: 'white'}} />
@@ -16,4 +16,4 @@ const DataManager = (): JSX.Element => {
   )
 }
 
-export { DataManager }
+export { EncDataManager }
