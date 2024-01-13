@@ -12,3 +12,20 @@
     overflow: hidden;
   
 }
+
+
+.FileReady{
+    width: 10rem;
+    height: 4rem;
+    background-color: green;
+    border: unset;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.FileReady:hover{
+    background-color: unset;
+    border: 1px solid #4096ff;
+}
