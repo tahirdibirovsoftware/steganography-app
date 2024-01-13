@@ -12,7 +12,7 @@ export const Router = ():JSX.Element => {
             <Route path="/decoder" element={<Decoder/>}/>
             <Route path="result" element={<Result/>}/>
             <Route path="/processor" element={<Processor/>}/>
-            <Route path="*" element={<Navigate replace to="/processor" />} />
+            <Route path="*" element={<Navigate replace to="/result" />} />
         </Routes>
     )
 }
