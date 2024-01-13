@@ -1,0 +1,1 @@
+export { DecDataManager } from './ui/index'
