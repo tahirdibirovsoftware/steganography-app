@@ -2,8 +2,6 @@ import { EncryptType, IEncrypter } from './encrypter.interface'
 import crypto, { DecipherGCM, CipherGCM } from 'crypto'
 
 class EncrypterService implements IEncrypter {
-  private data: string
-  private secretKey: string
   private iv: string = 'dbrv-not-secure'
   private hashedIv: Buffer = crypto.createHash('sha256').update(this.iv).digest().slice(0, 12)
   encrypt = (secretKey: string, privateMessage: string): EncryptType => {

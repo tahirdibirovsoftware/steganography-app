@@ -1,19 +1,22 @@
-import { IEncrypter } from "./encrypter.interface"
+import { readFileSync } from "fs"
+import { EncryptType, IEncrypter } from "./encrypter.interface"
+import { decode, encode  } from 'ts-steganography'
+import { decodeMessage, encodeMessage } from "../lib/steganographer"
 
 class EncoderService {
-  private imagePath: string
+  private filePath: string
   private encryptedData?: string
   private encrypter: IEncrypter
-  constructor(imagePath: string, encryptedData?: string) {
-    this.imagePath = imagePath
-    this.encryptedData = encryptedData
+  // constructor(imagePath: string, encryptedData?: string) {
+  //   this.imagePath = imagePath
+  //   this.encryptedData = encryptedData
+  // }
+  public encodeFile = async (filePath: string) => {
+      return await encodeMessage(filePath, {namer: 'Tahir'})
   }
-  public encode = (): string => {
-    return 'Encoded File Path'
-  }
-  public decode = (): string => {
-    return 'Decoded File Path'
+  public decodeFile = async (filePath: string) => {
+      return await decodeMessage(filePath)
   }
 }
 
-export default EncoderService
+export default new EncoderService() as EncoderService

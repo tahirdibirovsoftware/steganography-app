@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getFilePath } from './lib/getFilePath'
 import EncryptionService from './services/encrypter.service'
-
+import EncoderService from './services/encoder.service'
 
 function createWindow(): void {
   // Create the browser window.
@@ -74,6 +74,10 @@ app.on('window-all-closed', () => {
 ipcMain.handle('encrypt-it', async (_event, data)=>{
   const filePath = await getFilePath()
   const {secretKey, privateMessage } = data
-  const message = EncryptionService.encrypt(secretKey, privateMessage)
-  console.log(EncryptionService.decrypt('heybro', message))
+  // const message = EncryptionService.encrypt(secretKey, privateMessage)
+  // console.log(EncryptionService.decrypt('heybro', message))
+  if(filePath) {
+  //(await EncoderService.encodeFile(filePath)).writeAsync('/tmp/processed/pro.png').then(data=>console.log(data))
+  console.log(await EncoderService.decodeFile(filePath))
+  }
 })
