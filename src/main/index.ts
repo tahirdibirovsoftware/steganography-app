@@ -2,9 +2,10 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getFilePath } from './lib/getFilePath'
-import EncryptionService from './services/encrypter.service'
 import EncoderService from './services/encoder.service'
-
+import { makeDirectory } from './lib/folderCheck'
+import { config } from 'dotenv'
+config()
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -51,7 +52,7 @@ app.whenReady().then(() => {
   })
 
   createWindow()
-
+  makeDirectory(process.env.DATA_SAVE_DIRECTORY || 'Steganography')
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -77,7 +78,7 @@ ipcMain.handle('encrypt-it', async (_event, data)=>{
   // const message = EncryptionService.encrypt(secretKey, privateMessage)
   // console.log(EncryptionService.decrypt('heybro', message))
   if(filePath) {
-  //(await EncoderService.encodeFile(filePath)).writeAsync('/tmp/processed/pro.png').then(data=>console.log(data))
-  console.log(await EncoderService.decodeFile(filePath))
+
+    
   }
 })

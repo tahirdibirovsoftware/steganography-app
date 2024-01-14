@@ -4,15 +4,17 @@ import { decode, encode  } from 'ts-steganography'
 import { decodeMessage, encodeMessage } from "../lib/steganographer"
 
 class EncoderService {
-  private filePath: string
-  private encryptedData?: string
   private encrypter: IEncrypter
-  // constructor(imagePath: string, encryptedData?: string) {
-  //   this.imagePath = imagePath
-  //   this.encryptedData = encryptedData
-  // }
-  public encodeFile = async (filePath: string) => {
-      return await encodeMessage(filePath, {namer: 'Tahir'})
+
+
+  constructor(Encrypter: IEncrypter){
+    this.encrypter = Encrypter
+  }
+
+  public encodeFile = async (secretKey: string, privateMessage: string, filePath: string) => {
+      const encryptedData = this.encrypter.encrypt(secretKey, privateMessage)
+      return await encodeMessage(filePath, encryptedData)
+
   }
   public decodeFile = async (filePath: string) => {
       return await decodeMessage(filePath)
