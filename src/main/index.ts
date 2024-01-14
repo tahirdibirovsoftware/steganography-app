@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getFilePath } from './lib/getFilePath'
+import EncryptionService from './services/encrypter.service'
 
 
 function createWindow(): void {
@@ -41,10 +42,6 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
-  ipcMain.handle('encrypt-it', async (_event, data)=>{
-    const filePath = await getFilePath()
-    console.log(data, filePath)
-  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -73,3 +70,10 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.handle('encrypt-it', async (_event, data)=>{
+  const filePath = await getFilePath()
+  const {secretKey, privateMessage } = data
+  const message = EncryptionService.encrypt(secretKey, privateMessage)
+  console.log(EncryptionService.decrypt('heybro', message))
+})

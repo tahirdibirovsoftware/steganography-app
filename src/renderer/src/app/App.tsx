@@ -12,7 +12,7 @@ const App = (): JSX.Element => {
       <SHBCNLogo height={50} width={150}/>
       <Image src={glitch} style={{width: '500px', height: '5px', borderRadius: '30%'}}/>
       <Router/>
-      <Copyright color='grey' text='DBRV Software'/>
+      <Copyright color='grey' text='DBRV Software, Tahir Dibirov II'/>
     </Space>
   )
 }
