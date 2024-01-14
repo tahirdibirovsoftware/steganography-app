@@ -1,5 +1,5 @@
 import { EncryptType, IEncrypter } from './encrypter.interface'
-import crypto from 'crypto'
+import crypto, { DecipherGCM, CipherGCM } from 'crypto'
 
 class Encrypter implements IEncrypter {
   private data: string
@@ -7,12 +7,12 @@ class Encrypter implements IEncrypter {
   private iv: string = 'dbrv-not-secure'
   private hashedIv: Buffer = crypto.createHash('sha256').update(this.iv).digest().slice(0,12)
   encrypt = (secretKey: string, privateMessage: string): EncryptType => {
-    const hashedKey = crypto.createHash('sha256').update(secretKey).digest()
-    const chiper = crypto.createCipheriv('aes-256-gcm', hashedKey, this.hashedIv)
-    let encrypted = chiper.update(privateMessage, 'utf-8', 'hex')
+    const hashedKey: Buffer = crypto.createHash('sha256').update(secretKey).digest()
+    const chiper: CipherGCM = crypto.createCipheriv('aes-256-gcm', hashedKey, this.hashedIv)
+    let encrypted: string = chiper.update(privateMessage, 'utf-8', 'hex')
     encrypted += chiper.final('hex')
 
-    const authTag = chiper.getAuthTag()
+    const authTag: Buffer = chiper.getAuthTag()
 
     return {
       encrypted,
@@ -21,8 +21,8 @@ class Encrypter implements IEncrypter {
     }
   }
   decrypt = (secretKey: string, encryptedMessage: EncryptType): string => {
-    const hashedKey = crypto.createHash('sha256').update(secretKey).digest()
-    const dechiper = crypto.createDecipheriv('aes-256-gcm', hashedKey, this.hashedIv)
+    const hashedKey:Buffer = crypto.createHash('sha256').update(secretKey).digest()
+    const dechiper: DecipherGCM = crypto.createDecipheriv('aes-256-gcm', hashedKey, this.hashedIv)
     dechiper.setAuthTag(Buffer.from(encryptedMessage.authTag, 'hex'))
     const decrypted = dechiper.update(encryptedMessage.encrypted, 'hex', 'utf8')
     return decrypted
