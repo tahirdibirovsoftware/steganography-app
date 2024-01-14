@@ -27,4 +27,4 @@ class EncrypterService implements IEncrypter {
   }
 }
 
-export default new EncrypterService() as EncrypterService
+export default EncrypterService

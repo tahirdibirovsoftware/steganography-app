@@ -2,10 +2,14 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getFilePath } from './lib/getFilePath'
-import EncoderService from './services/encoder.service'
 import { makeDirectory } from './lib/folderCheck'
 import { config } from 'dotenv'
+import EncoderService from './services/encoder.service'
+import EncrypterService from './services/encrypter.service'
 config()
+
+const encodingService = new EncoderService(new EncrypterService())
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -79,6 +83,7 @@ ipcMain.handle('encrypt-it', async (_event, data)=>{
   // console.log(EncryptionService.decrypt('heybro', message))
   if(filePath) {
 
+    encodingService.encodeFile(secretKey, privateMessage, filePath)
     
   }
 })
