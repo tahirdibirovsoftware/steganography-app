@@ -1,0 +1,1 @@
+export { formikDataConfigDec } from './formikDataConfig'

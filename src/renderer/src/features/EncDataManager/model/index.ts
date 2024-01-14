@@ -1,2 +1,2 @@
 export { dataSchema } from './dataScheme'
-export { formikDataConfig } from './formikDataConfig'
+export { formikDataConfigEnc } from './formikDataConfig'

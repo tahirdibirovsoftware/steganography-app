@@ -7,7 +7,9 @@ type EncDataType = { privateMessage: string; secretKey: string }
 
 const api = {
   sendDataToMainEnc: async (data: EncDataType): Promise<string | void> =>
-    await ipcRenderer.invoke('encrypt-it', data)
+    await ipcRenderer.invoke('encrypt-it', data),
+  sendDataToMainDec: async (data: EncDataType): Promise<string | void> =>
+    await ipcRenderer.invoke('decrypt-it', data)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

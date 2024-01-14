@@ -76,14 +76,23 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.handle('encrypt-it', async (_event, data)=>{
+ipcMain.handle('encrypt-it', async (_event, data) => {
   const filePath = await getFilePath()
-  const {secretKey, privateMessage } = data
-  // const message = EncryptionService.encrypt(secretKey, privateMessage)
-  // console.log(EncryptionService.decrypt('heybro', message))
-  if(filePath) {
-
+  const { secretKey, privateMessage } = data
+  if (filePath) {
     encodingService.encodeFile(secretKey, privateMessage, filePath)
-    
   }
 })
+
+ipcMain.handle('decrypt-it', async (_event, data) => {
+  const filePath = await getFilePath()
+  const { secretKey } = data
+  console.log(secretKey)
+  if (filePath) {
+   const message = await encodingService.decodeFile(secretKey, filePath)
+   console.log(message)
+  }
+})
+
+
+

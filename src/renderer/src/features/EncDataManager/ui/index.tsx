@@ -3,13 +3,17 @@ import style from './DataManager.module.scss'
 import { LockOutlined, UnlockOutlined, UploadOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
 import { useFormik } from 'formik'
-import { formikDataConfig } from '../model'
+import { formikDataConfigEnc } from '../model'
+import { useNavigate } from 'react-router-dom'
 
 const EncDataManager = (): JSX.Element => {
-  const formik = useFormik(formikDataConfig)
+  const formik = useFormik(formikDataConfigEnc)
   const isError: boolean = Boolean(
     formik.errors.privateMessage?.length || formik.errors.secretKey?.length
   )
+
+  const navigate = useNavigate()
+
 
   return (
     <Space>
@@ -40,14 +44,16 @@ const EncDataManager = (): JSX.Element => {
           className={style.Input}
           style={{
             width: '10rem',
-            background: !isError ? '#1890ff' : '#636363',
-            border: 'unset'
+            background: !isError ? '#1890ff' : 'unset',
+            border: !isError? 'unset' : '1px solid gray',
+            color: isError ? 'gray': 'white'
           }}
           icon={<UploadOutlined />}
         >
           Şəkli daxil edin
         </Button>
         <Button
+          onClick={() => navigate('/decoder')}
           icon={<UnlockOutlined />}
           style={{ background: 'green', color: 'white', border: 'unset' }}
         >

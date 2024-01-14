@@ -21,7 +21,7 @@ class EncoderService {
     return encodedFile
   }
   public decodeFile = async (secretKey: string, filePath: string): Promise<string | void> => {
-    const encryptedData: EncryptType | string = await decodeMessage(filePath)
+    const encryptedData: EncryptType | string = JSON.parse(await decodeMessage(filePath))
     if (typeof encryptedData !== 'string') {
       const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData)
       return decryptedMessage

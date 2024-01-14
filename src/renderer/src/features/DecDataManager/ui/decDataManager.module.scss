@@ -1,6 +1,6 @@
 .Manager{
     width: 600px;
-    height: 250px;
+    height: 350px;
     background-color: black; 
     padding: 1rem;
     display: flex;
@@ -27,4 +27,21 @@
     background: unset;
     color: white;
     transition: 50ms all linear !important;
+}
+
+
+.Input{
+    background-color: black;
+    border: 1px solid darkslategray;
+    caret-color: white;
+    color: white;
+    width: 30rem;
+    height: rem;
+    position: relative;
+}
+
+
+
+.Input::placeholder{
+    color: gray;
 }

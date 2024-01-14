@@ -1,12 +1,12 @@
 import { FormikConfig } from 'formik'
 import { dataSchema } from './dataScheme'
 
-interface IData {
+interface IDataEnc {
   secretKey: string
   privateMessage: string
 }
 
-const formikDataConfig: FormikConfig<IData> = {
+const formikDataConfigEnc: FormikConfig<IDataEnc> = {
   initialValues: {
     secretKey: '',
     privateMessage: ''
@@ -16,4 +16,4 @@ const formikDataConfig: FormikConfig<IData> = {
   onSubmit: (values) => window.api.sendDataToMainEnc(values)
 }
 
-export { formikDataConfig }
+export { formikDataConfigEnc }
