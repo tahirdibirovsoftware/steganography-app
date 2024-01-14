@@ -1,8 +1,14 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+
+type EncDataType = { privateMessage: string; secretKey: string }
+
+const api = {
+  sendDataToMainEnc: async (data: EncDataType): Promise<string | void> =>
+    await ipcRenderer.invoke('encrypt-it', data)
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

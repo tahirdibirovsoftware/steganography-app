@@ -13,7 +13,7 @@ const formikDataConfig: FormikConfig<IData> = {
   },
   validateOnMount: true,
   validationSchema: dataSchema,
-  onSubmit: (values) => alert(values.privateMessage)
+  onSubmit: (values) => window.api.sendDataToMainEnc(values)
 }
 
 export { formikDataConfig }

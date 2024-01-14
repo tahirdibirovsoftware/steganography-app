@@ -1,6 +1,9 @@
+import { IEncrypter } from "./encrypter.interface"
+
 class Encoder {
   private imagePath: string
   private encryptedData?: string
+  private encrypter: IEncrypter
   constructor(imagePath: string, encryptedData?: string) {
     this.imagePath = imagePath
     this.encryptedData = encryptedData
