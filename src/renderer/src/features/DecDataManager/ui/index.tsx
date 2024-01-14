@@ -8,6 +8,9 @@ import { formikDataConfigDec } from '../model'
 export const DecDataManager = (): JSX.Element => {
   const navigate = useNavigate()
   const formik = useFormik(formikDataConfigDec)
+  const isError: boolean = Boolean(
+    formik.errors.secretKey?.length
+  )
 
   return (
     <Space>
@@ -21,14 +24,15 @@ export const DecDataManager = (): JSX.Element => {
           className={style.Input}
           placeholder="Gizli şifrə"
         />
-        <Button
+        <Button disabled={isError}
           htmlType="submit"
           className={style.imageSelector}
+          style={isError ?{color: 'gray', border: '1px solid gray'}:{}}
           icon={<FileImageOutlined style={{ fontSize: '40px' }} />}
         >
           Şəkli seç
         </Button>
-        <Button
+        <Button 
           onClick={() => navigate('/encoder')}
           icon={<LockOutlined />}
           style={{ background: 'red', color: 'white', border: 'unset' }}
