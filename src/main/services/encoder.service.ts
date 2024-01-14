@@ -1,6 +1,6 @@
 import { IEncrypter } from "./encrypter.interface"
 
-class Encoder {
+class EncoderService {
   private imagePath: string
   private encryptedData?: string
   private encrypter: IEncrypter
@@ -16,4 +16,4 @@ class Encoder {
   }
 }
 
-export default Encoder
+export default EncoderService

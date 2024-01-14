@@ -1,11 +1,11 @@
 import { EncryptType, IEncrypter } from './encrypter.interface'
 import crypto, { DecipherGCM, CipherGCM } from 'crypto'
 
-class Encrypter implements IEncrypter {
+class EncrypterService implements IEncrypter {
   private data: string
   private secretKey: string
   private iv: string = 'dbrv-not-secure'
-  private hashedIv: Buffer = crypto.createHash('sha256').update(this.iv).digest().slice(0,12)
+  private hashedIv: Buffer = crypto.createHash('sha256').update(this.iv).digest().slice(0, 12)
   encrypt = (secretKey: string, privateMessage: string): EncryptType => {
     const hashedKey: Buffer = crypto.createHash('sha256').update(secretKey).digest()
     const chiper: CipherGCM = crypto.createCipheriv('aes-256-gcm', hashedKey, this.hashedIv)
@@ -21,7 +21,7 @@ class Encrypter implements IEncrypter {
     }
   }
   decrypt = (secretKey: string, encryptedMessage: EncryptType): string => {
-    const hashedKey:Buffer = crypto.createHash('sha256').update(secretKey).digest()
+    const hashedKey: Buffer = crypto.createHash('sha256').update(secretKey).digest()
     const dechiper: DecipherGCM = crypto.createDecipheriv('aes-256-gcm', hashedKey, this.hashedIv)
     dechiper.setAuthTag(Buffer.from(encryptedMessage.authTag, 'hex'))
     const decrypted = dechiper.update(encryptedMessage.encrypted, 'hex', 'utf8')
@@ -29,4 +29,4 @@ class Encrypter implements IEncrypter {
   }
 }
 
-export default Encrypter
+export default new EncrypterService() as EncrypterService
