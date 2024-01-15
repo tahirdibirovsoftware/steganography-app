@@ -8,7 +8,7 @@ type ProcessType =  'processing' | 'done' | 'suspend'
 
 interface AppState {
   filePath: string,
-  message: string,
+  privateMessage: string,
   navigation: AppNavigation
   isProcessing: ProcessType
 }
@@ -16,7 +16,7 @@ interface AppState {
 // Define the initial state using that type
 const initialState: AppState = {
   filePath: '',
-  message: '',
+  privateMessage: '',
   navigation: '/',
   isProcessing: 'suspend'
 }
@@ -30,7 +30,7 @@ export const appSlice:Slice<AppState> = createSlice({
       state.filePath = action.payload
     },
     setMessage: (state, action: PayloadAction<string>) => {
-      state.message = action.payload
+      state.privateMessage = action.payload
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     setNavigation: (state, action: PayloadAction<AppNavigation>) => {
@@ -38,11 +38,15 @@ export const appSlice:Slice<AppState> = createSlice({
       },
     setProcessState: (state, action: PayloadAction<ProcessType>)=>{
         state.isProcessing = action.payload
+    },
+
+    resetTheState: () => {
+      return initialState
     }
   }
 })
 
-export const { setFilePath, setMessage, setNavigation, setProcessState } = appSlice.actions
+export const { setFilePath, setMessage, setNavigation, setProcessState, resetTheState } = appSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const appState = (state: RootState): AppState => state.app

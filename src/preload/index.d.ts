@@ -5,7 +5,8 @@ declare global {
     electron: ElectronAPI
     api: {
       sendDataToMainEnc: (data: EncDataType) => Promise<string | void>,
-      sendDataToMainDec: (data: DecDataType) => Promise<string | void>
+      sendDataToMainDec: (data: DecDataType) => Promise<string | void>,
+      showTheFile: (filePath:string)=> void 
     }
   }
 }
