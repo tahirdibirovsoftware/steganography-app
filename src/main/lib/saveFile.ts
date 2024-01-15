@@ -9,7 +9,7 @@ const folderPath = resolve(homeDirectory, folderName)
 const fileName = `encoded-${uid()}.png`
 const filePath = resolve(folderPath, fileName)
 
-export const saveFile = async (file: Jimp): Promise<Jimp> => {
-  const encodeFile = await file.writeAsync(filePath)
-  return encodeFile
+export const saveFile = async (file: Jimp): Promise<string> => {
+  await file.writeAsync(filePath)
+  return filePath
 }

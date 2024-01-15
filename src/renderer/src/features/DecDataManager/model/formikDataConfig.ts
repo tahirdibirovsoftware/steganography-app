@@ -11,7 +11,10 @@ const formikDataConfigDec: FormikConfig<IDataDec> = {
   },
   validateOnMount: true,
   validationSchema: dataSchema,
-  onSubmit: (values) => window.api.sendDataToMainDec(values)
+  onSubmit: async (values) => { 
+   const message = await window.api.sendDataToMainDec(values)
+   console.log(message)
+}
 }
 
 export { formikDataConfigDec }

@@ -1,7 +1,6 @@
 import { EncryptType, IEncrypter } from './encrypter.interface'
 import { decodeMessage, encodeMessage } from '../lib/steganographer'
 import { saveFile } from '../lib/saveFile'
-import Jimp from 'jimp'
 
 class EncoderService {
   private encrypter: IEncrypter
@@ -14,11 +13,11 @@ class EncoderService {
     secretKey: string,
     privateMessage: string,
     filePath: string
-  ): Promise<Jimp> => {
+  ): Promise<string> => {
     const encryptedData = this.encrypter.encrypt(secretKey, privateMessage)
     const encodedFile = await encodeMessage(filePath, encryptedData)
-    saveFile(encodedFile)
-    return encodedFile
+    const savedFilePath = await saveFile(encodedFile)
+    return savedFilePath
   }
   public decodeFile = async (secretKey: string, filePath: string): Promise<string | void> => {
     const encryptedData: EncryptType | string = JSON.parse(await decodeMessage(filePath))

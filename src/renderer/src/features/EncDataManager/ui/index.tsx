@@ -5,12 +5,14 @@ import TextArea from 'antd/es/input/TextArea'
 import { useFormik } from 'formik'
 import { formikDataConfigEnc } from '../model'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 const EncDataManager = (): JSX.Element => {
   const formik = useFormik(formikDataConfigEnc)
   const isError: boolean = Boolean(
     formik.errors.privateMessage?.length || formik.errors.secretKey?.length
   )
+
 
   const navigate = useNavigate()
 

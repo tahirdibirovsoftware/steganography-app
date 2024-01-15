@@ -1,5 +1,7 @@
 import { FormikConfig } from 'formik'
 import { dataSchema } from './dataScheme'
+import { store } from '@renderer/app/store'
+import { setFilePath, setProcessState } from '@renderer/app/store/appSlice'
 
 interface IDataEnc {
   secretKey: string
@@ -13,7 +15,12 @@ const formikDataConfigEnc: FormikConfig<IDataEnc> = {
   },
   validateOnMount: true,
   validationSchema: dataSchema,
-  onSubmit: (values) => window.api.sendDataToMainEnc(values)
+  onSubmit: async (values) => {
+    store.dispatch(setProcessState('processing'))
+    const filePath = await window.api.sendDataToMainEnc(values)
+    store.dispatch(setFilePath(filePath))
+    store.dispatch(setProcessState('done'))
+  }
 }
 
 export { formikDataConfigEnc }

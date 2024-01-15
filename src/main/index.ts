@@ -39,6 +39,9 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  eventHandler(mainWindow)
+
 }
 
 // This method will be called when Electron has finished
@@ -76,23 +79,23 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.handle('encrypt-it', async (_event, data) => {
-  const filePath = await getFilePath()
-  const { secretKey, privateMessage } = data
-  if (filePath) {
-    encodingService.encodeFile(secretKey, privateMessage, filePath)
-  }
-})
+const eventHandler = (win: BrowserWindow):void => {
+  ipcMain.handle('encrypt-it', async (_event, data) => {
+    const filePath = await getFilePath(win)
+    const { secretKey, privateMessage } = data
+    if (filePath) {
+     const savedFilePath = await encodingService.encodeFile(secretKey, privateMessage, filePath)
+     console.log(savedFilePath)
+     return savedFilePath
+    }
+  })
 
-ipcMain.handle('decrypt-it', async (_event, data) => {
-  const filePath = await getFilePath()
-  const { secretKey } = data
-  console.log(secretKey)
-  if (filePath) {
-   const message = await encodingService.decodeFile(secretKey, filePath)
-   console.log(message)
-  }
-})
-
-
-
+  ipcMain.handle('decrypt-it', async (_event, data) => {
+    const filePath = await getFilePath(win)
+    const { secretKey } = data
+    if (filePath) {
+      const message = await encodingService.decodeFile(secretKey, filePath)
+      return message
+    }
+  })
+}
