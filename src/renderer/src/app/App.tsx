@@ -13,11 +13,12 @@ import { resetTheState } from './store/appSlice'
 const App = (): JSX.Element => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { isProcessing } = useAppSelector((state) => state.app)
+  const { isProcessing, isError } = useAppSelector((state) => state.app)
 
   useEffect(() => {
     if (isProcessing === 'processing') navigate('/processor')
     if (isProcessing === 'done') navigate('/result')
+    if (isError) navigate('/error')
   }, [isProcessing])
 
   return (

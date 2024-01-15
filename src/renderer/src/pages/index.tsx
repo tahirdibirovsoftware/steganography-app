@@ -3,6 +3,7 @@ import { Encoder } from './Encoder'
 import { Decoder } from './Decoder'
 import { Result } from './Result'
 import { Processor } from './Processor'
+import { ErrorPage } from './Error'
 
 export const Router = (): JSX.Element => {
   return (
@@ -11,6 +12,7 @@ export const Router = (): JSX.Element => {
       <Route path="/decoder" element={<Decoder />} />
       <Route path="/result" element={<Result />} />
       <Route path="/processor" element={<Processor />} />
+      <Route path="/error" element={<ErrorPage />} />
       <Route path="*" element={<Navigate replace to="/encoder" />} />
     </Routes>
   )

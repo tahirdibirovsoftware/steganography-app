@@ -10,7 +10,8 @@ interface AppState {
   filePath: string,
   privateMessage: string,
   navigation: AppNavigation
-  isProcessing: ProcessType
+  isProcessing: ProcessType,
+  isError: boolean
 }
 
 // Define the initial state using that type
@@ -18,7 +19,8 @@ const initialState: AppState = {
   filePath: '',
   privateMessage: '',
   navigation: '/',
-  isProcessing: 'suspend'
+  isProcessing: 'suspend',
+  isError: false
 }
 
 export const appSlice:Slice<AppState> = createSlice({
@@ -40,13 +42,17 @@ export const appSlice:Slice<AppState> = createSlice({
         state.isProcessing = action.payload
     },
 
+    setError: (state, action: PayloadAction<boolean>)=>{
+        state.isError = action.payload
+    },
+
     resetTheState: () => {
       return initialState
     }
   }
 })
 
-export const { setFilePath, setMessage, setNavigation, setProcessState, resetTheState } = appSlice.actions
+export const { setFilePath, setMessage, setNavigation, setProcessState, resetTheState, setError } = appSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const appState = (state: RootState): AppState => state.app

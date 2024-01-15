@@ -20,11 +20,17 @@ class EncoderService {
     return savedFilePath
   }
   public decodeFile = async (secretKey: string, filePath: string): Promise<string | void> => {
+    try{
     const encryptedData: EncryptType | string = JSON.parse(await decodeMessage(filePath))
     if (typeof encryptedData !== 'string') {
-      const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData)
+      
+        const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData)
       return decryptedMessage
     }
+      }catch(err){
+        throw new Error('error')
+      }
+    
   }
 }
 

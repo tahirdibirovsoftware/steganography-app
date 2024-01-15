@@ -19,12 +19,16 @@ class EncrypterService implements IEncrypter {
     }
   }
   decrypt = (secretKey: string, encryptedMessage: EncryptType): string => {
+    try{
     const hashedKey: Buffer = crypto.createHash('sha256').update(secretKey).digest()
     const dechiper: DecipherGCM = crypto.createDecipheriv('aes-256-gcm', hashedKey, this.hashedIv)
     dechiper.setAuthTag(Buffer.from(encryptedMessage.authTag, 'hex'))
+   
     const decrypted = dechiper.update(encryptedMessage.encrypted, 'hex', 'utf8')
     return decrypted
+   }catch(err){
+     throw new Error('error')
   }
-}
+}}
 
 export default EncrypterService

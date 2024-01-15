@@ -45,14 +45,14 @@ const EncDataManager = (): JSX.Element => {
           color="primary"
           className={style.Input}
           style={{
-            width: '10rem',
+            width: '14em',
             background: !isError ? '#1890ff' : 'unset',
             border: !isError? 'unset' : '1px solid gray',
             color: isError ? 'gray': 'white'
           }}
           icon={<UploadOutlined />}
         >
-          Şəkli daxil edin
+          Şəkli daxil edin (PNG)
         </Button>
         <Button
           onClick={() => navigate('/decoder')}
