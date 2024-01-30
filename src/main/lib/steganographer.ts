@@ -31,7 +31,7 @@ async function encodeMessage(imagePath: string, message: string | object): Promi
     const binaryMessage = messageToBinary(message);
 
     let index = 0;
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (_x, _y, idx) {
       if (index < binaryMessage.length) {
         const bit = binaryMessage[index++] === '1' ? 1 : 0;
         this.bitmap.data[idx] = (this.bitmap.data[idx] & 0xfe) | bit;
@@ -49,7 +49,7 @@ async function decodeMessage(imagePath: string): Promise<string> {
     const image = await Jimp.read(imagePath);
     let binaryData = '';
 
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (_x, _y, idx) {
       binaryData += this.bitmap.data[idx] & 0x1;
     });
 

@@ -88,6 +88,7 @@ const eventHandler = (win: BrowserWindow):void => {
      console.log(savedFilePath)
      return savedFilePath
     }
+    return 0
   })
 
   ipcMain.handle('decrypt-it', async (_event, data) => {
@@ -97,5 +98,6 @@ const eventHandler = (win: BrowserWindow):void => {
       const message = await encodingService.decodeFile(secretKey, filePath)
       return message
     }
+    return 0
   })
 }
