@@ -5,6 +5,6 @@ export type EncryptType = {
 }
 
 export interface IEncrypter {
-  encrypt: (secretKey: string, privateMessage: string) => EncryptType
-  decrypt: (secretKey: string, encryptedMessage: EncryptType) => string
+  encrypt: (secretKey: string, privateMessage: string) => string
+  decrypt: (secretKey: string, encryptedMessage: string) => string
 }

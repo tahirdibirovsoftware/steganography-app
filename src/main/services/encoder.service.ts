@@ -1,4 +1,4 @@
-import { EncryptType, IEncrypter } from './encrypter.interface'
+import { IEncrypter } from './encrypter.interface'
 import { decodeMessage, encodeMessage } from '../lib/steganographer'
 import { saveFile } from '../lib/saveFile'
 
@@ -20,18 +20,15 @@ class EncoderService {
     return savedFilePath
   }
   public decodeFile = async (secretKey: string, filePath: string): Promise<string | void> => {
-    try{
-    const encryptedData: EncryptType | string = JSON.parse(await decodeMessage(filePath))
-    if (typeof encryptedData !== 'string') {
-      
+   
+      const encryptedData:  string = await decodeMessage(filePath)
+     
+
         const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData)
-      return decryptedMessage
-    }
-      }catch(err){
-        throw new Error('error')
+        return decryptedMessage
       }
-    
+ 
+
   }
-}
 
 export default EncoderService

@@ -40,38 +40,53 @@ const makeDirectory = async (directoryName) => {
     }
   });
 };
-async function encodeMessage(imagePath, message) {
-  const image = await Jimp.read(imagePath);
-  const messageString = typeof message === "object" ? JSON.stringify(message) : message;
-  const fullMessage = messageString + "#";
-  const binaryMessage = fullMessage.split("").map((char) => char.charCodeAt(0).toString(2).padStart(8, "0")).join("");
-  let index = 0;
-  image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
-    if (index < binaryMessage.length) {
-      const bit = binaryMessage[index] === "1" ? 1 : 0;
-      this.bitmap.data[idx] = this.bitmap.data[idx] & 254 | bit;
-      index++;
-    }
-  });
-  return image;
+class ImageProcessingError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ImageProcessingError";
+  }
 }
-async function decodeMessage(imagePath) {
-  const image = await Jimp.read(imagePath);
-  let binaryData = "";
-  image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
-    const bit = this.bitmap.data[idx] & 1;
-    binaryData += bit;
-  });
+function messageToBinary(message) {
+  const messageString = typeof message === "object" ? JSON.stringify(message) : message;
+  return messageString.split("").map((char) => char.charCodeAt(0).toString(2).padStart(8, "0")).join("") + "00100011";
+}
+function binaryToMessage(binaryData) {
   let message = "";
   for (let i = 0; i < binaryData.length; i += 8) {
     const byte = binaryData.slice(i, i + 8);
-    const charCode = parseInt(byte, 2);
-    const char = String.fromCharCode(charCode);
-    if (char === "#")
+    if (byte === "00100011")
       break;
-    message += char;
+    message += String.fromCharCode(parseInt(byte, 2));
   }
   return message;
+}
+async function encodeMessage(imagePath, message) {
+  try {
+    const image = await Jimp.read(imagePath);
+    const binaryMessage = messageToBinary(message);
+    let index = 0;
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+      if (index < binaryMessage.length) {
+        const bit = binaryMessage[index++] === "1" ? 1 : 0;
+        this.bitmap.data[idx] = this.bitmap.data[idx] & 254 | bit;
+      }
+    });
+    return image;
+  } catch (error) {
+    throw new ImageProcessingError(`Failed to encode message: ${error instanceof Error ? error.message : error}`);
+  }
+}
+async function decodeMessage(imagePath) {
+  try {
+    const image = await Jimp.read(imagePath);
+    let binaryData = "";
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+      binaryData += this.bitmap.data[idx] & 1;
+    });
+    return binaryToMessage(binaryData);
+  } catch (error) {
+    throw new ImageProcessingError(`Failed to decode message: ${error instanceof Error ? error.message : error}`);
+  }
 }
 const homeDirectory = os.homedir();
 const folderName = "Steganography";
@@ -91,45 +106,70 @@ class EncoderService {
       return savedFilePath;
     };
     this.decodeFile = async (secretKey, filePath2) => {
-      try {
-        const encryptedData = JSON.parse(await decodeMessage(filePath2));
-        if (typeof encryptedData !== "string") {
-          const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData);
-          return decryptedMessage;
-        }
-      } catch (err) {
-        throw new Error("error");
-      }
+      const encryptedData = await decodeMessage(filePath2);
+      const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData);
+      return decryptedMessage;
     };
     this.encrypter = Encrypter;
   }
 }
+class EncryptionError extends Error {
+  constructor(message) {
+    super(`Encryption Error: ${message}`);
+    this.name = "EncryptionError";
+  }
+}
+class DecryptionError extends Error {
+  constructor(message) {
+    super(`Decryption Error: ${message}`);
+    this.name = "DecryptionError";
+  }
+}
+const encryptData = (secretKey, message) => {
+  try {
+    const iv = crypto.randomBytes(12);
+    const hashedSecretKey = crypto.scryptSync(secretKey, "salt", 32);
+    const cipher = crypto.createCipheriv("aes-256-gcm", hashedSecretKey, iv);
+    let encryptedData = cipher.update(message, "utf-8", "hex");
+    encryptedData += cipher.final("hex");
+    encryptedData += `@${iv.toString("hex")}`;
+    const authTag = cipher.getAuthTag().toString("hex");
+    encryptedData += `@${authTag}`;
+    return encryptedData;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new EncryptionError(error.message);
+    } else {
+      throw new EncryptionError("An unexpected error occurred");
+    }
+  }
+};
+const decryptData = (secretKey, encryptedData) => {
+  try {
+    const [encryptedMessage, ivHex, authTagHex] = encryptedData.split("@");
+    const hashedSecretKey = crypto.scryptSync(secretKey, "salt", 32);
+    const iv = Buffer.from(ivHex, "hex");
+    const authTag = Buffer.from(authTagHex, "hex");
+    const decipher = crypto.createDecipheriv("aes-256-gcm", hashedSecretKey, iv);
+    decipher.setAuthTag(authTag);
+    let decrypted = decipher.update(encryptedMessage, "hex", "utf-8");
+    decrypted += decipher.final("utf-8");
+    return decrypted;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new DecryptionError(error.message);
+    } else {
+      throw new DecryptionError("An unexpected error occurred");
+    }
+  }
+};
 class EncrypterService {
   constructor() {
-    this.iv = "dbrv-not-secure";
-    this.hashedIv = crypto.createHash("sha256").update(this.iv).digest().slice(0, 12);
     this.encrypt = (secretKey, privateMessage) => {
-      const hashedKey = crypto.createHash("sha256").update(secretKey).digest();
-      const chiper = crypto.createCipheriv("aes-256-gcm", hashedKey, this.hashedIv);
-      let encrypted = chiper.update(privateMessage, "utf-8", "hex");
-      encrypted += chiper.final("hex");
-      const authTag = chiper.getAuthTag();
-      return {
-        encrypted,
-        iv: this.hashedIv.toString("hex"),
-        authTag: authTag.toString("hex")
-      };
+      return encryptData(secretKey, privateMessage);
     };
     this.decrypt = (secretKey, encryptedMessage) => {
-      try {
-        const hashedKey = crypto.createHash("sha256").update(secretKey).digest();
-        const dechiper = crypto.createDecipheriv("aes-256-gcm", hashedKey, this.hashedIv);
-        dechiper.setAuthTag(Buffer.from(encryptedMessage.authTag, "hex"));
-        const decrypted = dechiper.update(encryptedMessage.encrypted, "hex", "utf8");
-        return decrypted;
-      } catch (err) {
-        throw new Error("error");
-      }
+      return decryptData(secretKey, encryptedMessage);
     };
   }
 }
