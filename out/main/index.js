@@ -98,19 +98,29 @@ const saveFile = async (file) => {
   return filePath;
 };
 class EncoderService {
-  constructor(Encrypter) {
-    this.encodeFile = async (secretKey, privateMessage, filePath2) => {
+  constructor(encrypter) {
+    this.encrypter = encrypter;
+  }
+  async encodeFile(secretKey, privateMessage, filePath2) {
+    try {
       const encryptedData = this.encrypter.encrypt(secretKey, privateMessage);
       const encodedFile = await encodeMessage(filePath2, encryptedData);
       const savedFilePath = await saveFile(encodedFile);
       return savedFilePath;
-    };
-    this.decodeFile = async (secretKey, filePath2) => {
+    } catch (error) {
+      console.error("Error encoding file:", error);
+      throw error;
+    }
+  }
+  async decodeFile(secretKey, filePath2) {
+    try {
       const encryptedData = await decodeMessage(filePath2);
       const decryptedMessage = this.encrypter.decrypt(secretKey, encryptedData);
       return decryptedMessage;
-    };
-    this.encrypter = Encrypter;
+    } catch (error) {
+      console.error("Error decoding file:", error);
+      throw error;
+    }
   }
 }
 class EncryptionError extends Error {
