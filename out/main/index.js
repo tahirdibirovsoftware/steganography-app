@@ -65,7 +65,7 @@ async function encodeMessage(imagePath, message) {
     const image = await Jimp.read(imagePath);
     const binaryMessage = messageToBinary(message);
     let index = 0;
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(_x, _y, idx) {
       if (index < binaryMessage.length) {
         const bit = binaryMessage[index++] === "1" ? 1 : 0;
         this.bitmap.data[idx] = this.bitmap.data[idx] & 254 | bit;
@@ -80,7 +80,7 @@ async function decodeMessage(imagePath) {
   try {
     const image = await Jimp.read(imagePath);
     let binaryData = "";
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(_x, _y, idx) {
       binaryData += this.bitmap.data[idx] & 1;
     });
     return binaryToMessage(binaryData);
@@ -236,6 +236,7 @@ const eventHandler = (win) => {
       console.log(savedFilePath);
       return savedFilePath;
     }
+    return 0;
   });
   electron.ipcMain.handle("decrypt-it", async (_event, data) => {
     const filePath2 = await getFilePath(win);
@@ -244,5 +245,6 @@ const eventHandler = (win) => {
       const message = await encodingService.decodeFile(secretKey, filePath2);
       return message;
     }
+    return 0;
   });
 };
