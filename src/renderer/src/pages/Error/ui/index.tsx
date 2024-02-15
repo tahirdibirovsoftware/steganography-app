@@ -1,4 +1,5 @@
-import { FailManager } from '@renderer/features/FailManager/ui'
+import { FailManager } from "@renderer/features/FailManager"
+
 
 const ErrorPage = (): JSX.Element => {
   return (

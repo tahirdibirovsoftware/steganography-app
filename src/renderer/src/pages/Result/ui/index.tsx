@@ -1,4 +1,4 @@
-import { FailManager } from '@renderer/features/FailManager/ui'
+import { FailManager } from '@renderer/features/FailManager'
 import { SuccessManager } from '@renderer/features/SuccessManager'
 
 export const Result = (): JSX.Element => {

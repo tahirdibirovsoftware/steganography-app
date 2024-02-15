@@ -33,12 +33,6 @@ export const SuccessManager: FC<ISuccessManager> = ({ message }): JSX.Element =>
         </Button>
       )}
       {isFile && (
-        // <Button
-        //   icon={<FileTextOutlined style={{ fontSize: '1.5rem' }} />}
-        //   className={style.FileReady}
-        // >
-        //   Faylı götür
-        // </Button>
         <TextArea
          style={{height: '12rem',width: '30rem', borderRadius: '.5rem', border: '1px solid gray', background: 'unset', color: 'white'}}
          value={privateMessage} 

@@ -1,4 +1,4 @@
-import { ProcessManager } from "@renderer/features/ProcessManager/ui"
+import { ProcessManager } from "@renderer/features/ProcessManager"
 
 export const Processor = ():JSX.Element => {
     return (
