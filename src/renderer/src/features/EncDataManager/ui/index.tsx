@@ -42,9 +42,10 @@ const EncDataManager = (): JSX.Element => {
           disabled={isError}
           htmlType="submit"
           color="primary"
-          className={style.Input}
+          
           style={{
-            width: '14em',
+            height: '4.5rem',
+            width: '14rem',
             background: !isError ? '#1890ff' : 'unset',
             border: !isError? 'unset' : '1px solid gray',
             color: isError ? 'gray': 'white'

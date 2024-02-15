@@ -1,5 +1,5 @@
 import { decryptData, encryptData } from '../lib/gcmEncryption'
-import { IEncrypter } from './encrypter.interface'
+import { IEncrypter } from '../repository/encrypter.interface'
 
 
 class EncrypterService implements IEncrypter {

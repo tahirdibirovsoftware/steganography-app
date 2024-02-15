@@ -1,4 +1,4 @@
-import { IEncrypter } from './encrypter.interface';
+import { IEncrypter } from '../repository/encrypter.interface';
 import { decodeMessage, encodeMessage } from '../lib/steganographer';
 import { saveFile } from '../lib/saveFile';
 

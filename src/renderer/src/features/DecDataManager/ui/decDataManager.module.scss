@@ -24,14 +24,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: unset;
+    background: unset !important;
     color: white;
     transition: 50ms all linear !important;
 }
 
 
 .Input{
-    background-color: black;
+    background-color: black !important;
     border: 1px solid darkslategray;
     caret-color: white;
     color: white;
