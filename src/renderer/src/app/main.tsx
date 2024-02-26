@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './_global.scss'
-import { withProviders } from './providers'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { BrowserRouter } from 'react-router-dom'

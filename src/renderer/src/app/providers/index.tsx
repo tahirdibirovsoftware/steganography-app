@@ -1,5 +1,5 @@
 import compose from 'compose-function'
 import { withRouter } from './with-router'
-import { WithStore } from './with-store'
+import { withStore } from './with-store'
 
-export const withProviders = compose(withRouter, WithStore)
+export const withProviders = compose(withRouter, withStore)
