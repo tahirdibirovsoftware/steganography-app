@@ -91,10 +91,11 @@ async function decodeMessage(imagePath) {
 const homeDirectory = os.homedir();
 const folderName = "Steganography";
 const folderPath = path.resolve(homeDirectory, folderName);
-const fileName = `encoded-${uid.uid()}.png`;
+let fileName = `encoded-${uid.uid()}.png`;
 const filePath = path.resolve(folderPath, fileName);
 const saveFile = async (file) => {
   await file.writeAsync(filePath);
+  fileName = `encoded-${uid.uid()}.png`;
   return filePath;
 };
 class EncoderService {

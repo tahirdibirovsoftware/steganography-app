@@ -1,4 +1,4 @@
-import { CheckCircleOutlined, FileImageOutlined, FileTextOutlined } from '@ant-design/icons'
+import { CheckCircleOutlined, FileImageOutlined } from '@ant-design/icons'
 import { Button, Space, Typography } from 'antd'
 import style from './SuccessManager.module.scss'
 import { FC } from 'react'

@@ -1,7 +1,7 @@
-import { store } from "../store"
+// import { store } from "../store"
 
-const resetState = ()=> {
-    store.dispatch(resetState())
-}
+// const resetState = ()=> {
+//     store.dispatch(resetState())
+// }
 
-export {resetState}
+// export {resetState}

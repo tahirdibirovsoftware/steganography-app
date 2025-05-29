@@ -6,10 +6,11 @@ import { uid } from 'uid'
 const homeDirectory = homedir()
 const folderName = 'Steganography'
 const folderPath = resolve(homeDirectory, folderName)
-const fileName = `encoded-${uid()}.png`
+let fileName = `encoded-${uid()}.png`
 const filePath = resolve(folderPath, fileName)
 
 export const saveFile = async (file: Jimp): Promise<string> => {
   await file.writeAsync(filePath)
+  fileName = `encoded-${uid()}.png`
   return filePath
 }

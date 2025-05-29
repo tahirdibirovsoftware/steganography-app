@@ -16,7 +16,7 @@ const formikDataConfigDec: FormikConfig<IDataDec> = {
   onSubmit: async (values) => {
   try{
     store.dispatch(setProcessState('processing')) 
-    const message = await window.api.sendDataToMainDec(values)
+    const message = await window.api.sendDataToMainDec(values) || ''
     store.dispatch(setMessage(message))
   }catch(err){
     store.dispatch(setError(true))

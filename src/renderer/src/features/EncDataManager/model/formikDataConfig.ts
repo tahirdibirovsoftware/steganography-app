@@ -17,7 +17,7 @@ const formikDataConfigEnc: FormikConfig<IDataEnc> = {
   validationSchema: dataSchema,
   onSubmit: async (values) => {
     store.dispatch(setProcessState('processing'))
-    const filePath = await window.api.sendDataToMainEnc(values)
+    const filePath = await window.api.sendDataToMainEnc(values) || ''
     store.dispatch(setFilePath(filePath))
     store.dispatch(setProcessState('done'))
   }
